@@ -1,4 +1,4 @@
-# tang-portal2
+# tang-portal
 
 ## Project setup
 ```

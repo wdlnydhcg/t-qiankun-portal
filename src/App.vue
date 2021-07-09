@@ -1,28 +1,113 @@
+<!--
+ * @Author: MrAlenZhong
+ * @Date: 2021-06-25 16:18:31
+ * @LastEditors: MrAlenZhong
+ * @LastEditTime: 2021-07-08 15:58:21
+ * @Description: 
+-->
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="root" class="main-container">
+    <!-- 登陆后视图 -->
+    <template v-if="hasToken">
+      <!-- 左侧菜单区 -->
+       <the-nav />
+      <!-- 右侧视图 -->
+      <div class="main-container-content">
+        <!-- 上部导航区 -->
+      <the-menu class="main-menu-box" />
+       <!-- <el-scroll>
+         
+       </el-scroll> -->
+        <!-- 子应用渲染区 -->
+        <div class="main-container-view" :class="{'isCollapse_view':!isCollapse}">
+          <el-scrollbar class="nh-scroll">
+            <!-- qiankun2.0  container 模式-->
+            <div id="subapp-viewport" class="app-view-box"></div>
+          </el-scrollbar>
+        </div>
+      </div>
+      
+    </template>
+    <!-- 非登录视图 -->
+    <div v-else id="subapp-viewport" class="app-view-box"></div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import TheMenu from "@/components/TheMenu.vue";
+import TheNav from "@/components/TheNav.vue";
+
 
 export default {
-  name: 'App',
+  name: "rootView",
   components: {
-    HelloWorld
+    TheMenu,
+    TheNav,
+    
+  },
+  computed: {
+    hasToken() {
+      return !!this.$store.getters.token;
+    },
+    isCollapse() {
+      return this.$store.getters.is_collapse;
+    },
+  },
+  mounted(){
+  
   }
-}
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style lang="scss">
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+.main-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+.main-container-content {
+  flex: 1;
+  display: flex;
+  flex-flow: row;
+  overflow: hidden;
+  .menubar{
+    display: inline-flex;
+  }
+  > .main-container-view {
+    padding: 8px;
+    width: calc(100% - 65px);
+    height: calc(100%);
+    background: $main-base-color;
+    box-sizing: border-box;
+    &.isCollapse_view{
+      width: calc(100% - 250px);
+    }
+    > .nh-scroll {
+      width: 100%;
+      height: 100%;
+      // background: #fff;
+      border-radius: 4px;
+      .el-scrollbar__wrap {
+        overflow-x: hidden;
+        width: 100%;
+      }
+    }
+
+    .app-view-box {
+      width: 100%;
+      // padding: 12px;
+      box-sizing: border-box;
+    }
+  }
+}
+.subapp-loading {
+  background: url("~@/assets/images/loading.gif");
 }
 </style>
