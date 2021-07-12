@@ -2,7 +2,7 @@
  * @Author: MrAlenZhong
  * @Date: 2021-07-01 15:47:19
  * @LastEditors: MrAlenZhong
- * @LastEditTime: 2021-07-09 09:48:24
+ * @LastEditTime: 2021-07-09 17:24:48
  * @Description: 
 -->
 /**
@@ -12,8 +12,8 @@
   <div class="nav-tab-list-wrap">
     <div class="nav-tab-item">
       <!-- {{menu}} -->
-      <el-tag v-for="(item,index) in tabList" class="tag-page" :key="index" :type="item.type" closable>
-        {{item.name}}
+      <el-tag v-for="(item,index) in nav_list" class="tag-page" :class="{'active':nav_cur_id == item.id}" :key="index" @click="openPage(item)" closable>
+        {{item.funNameCn}}
       </el-tag>
     </div>
   </div>
@@ -22,25 +22,24 @@
 <script>
 //例如：import '' from ''
 import { mapGetters } from "vuex";
+import { routerGo } from "@/utils/utils.js"; // 引入跨应用路由跳转
 export default {
   name:"TabList",
   components: {},
   data() {
     return {
-      tabList: [
-        { name: '标签一'},
-        { name: '标签二'},
-        { name: '标签三'},
-        { name: '标签四'},
-        { name: '标签五'}
-      ]
     };
   },
   computed: {
-     ...mapGetters(["menu"])
+     ...mapGetters(["nav_list","nav_cur_id"])
   },
   watch: {},
-  methods: {},
+  methods: {
+    openPage(item){
+      this.$store.dispatch("menu/setNavItem", item.id);
+      routerGo(item.url)
+    }
+  },
   created() {}, //生命周期 - 挂载之后
   mounted() {}, //生命周期 - 挂载之后
   beforeCreate() {}, //生命周期 - 创建之前
@@ -72,6 +71,17 @@ export default {
     cursor: pointer;
     &:hover{
      background: #3e98d4;
+    }
+    &.active{
+      background: #ffffff;
+      color: #000000;
+      /deep/ i{
+        color: #3e98d4;
+        background: #fff;
+        &:hover{
+          background: #ccc;
+        }
+      }
     }
   /deep/ i{
     color: #ffffff;

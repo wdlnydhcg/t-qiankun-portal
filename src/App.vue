@@ -2,12 +2,13 @@
  * @Author: MrAlenZhong
  * @Date: 2021-06-25 16:18:31
  * @LastEditors: MrAlenZhong
- * @LastEditTime: 2021-07-08 15:58:21
+ * @LastEditTime: 2021-07-12 10:00:18
  * @Description: 
 -->
 <template>
   <div id="root" class="main-container">
     <!-- 登陆后视图 -->
+
     <template v-if="hasToken">
       <!-- 左侧菜单区 -->
        <the-nav />
@@ -15,14 +16,13 @@
       <div class="main-container-content">
         <!-- 上部导航区 -->
       <the-menu class="main-menu-box" />
-       <!-- <el-scroll>
-         
-       </el-scroll> -->
+
         <!-- 子应用渲染区 -->
         <div class="main-container-view" :class="{'isCollapse_view':!isCollapse}">
           <el-scrollbar class="nh-scroll">
             <!-- qiankun2.0  container 模式-->
             <div id="subapp-viewport" class="app-view-box"></div>
+            <div id="subapp-viewport2" class="app-view-box"></div>
           </el-scrollbar>
         </div>
       </div>
@@ -45,6 +45,10 @@ export default {
     TheNav,
     
   },
+  data(){
+    return {
+    }
+  },
   computed: {
     hasToken() {
       return !!this.$store.getters.token;
@@ -52,9 +56,13 @@ export default {
     isCollapse() {
       return this.$store.getters.is_collapse;
     },
+    navList() {
+      return this.$store.getters.nav_list;
+    },
   },
   mounted(){
-  
+    // console.log('this.$store.getters.menu_list',this.$store.getters.menu_list);
+    // this.$store.dispatch("menu/setMenu",[])
   }
 };
 </script>

@@ -2,13 +2,13 @@
  * @Author: MrAlenZhong
  * @Date: 2021-07-02 16:48:52
  * @LastEditors: MrAlenZhong
- * @LastEditTime: 2021-07-08 11:13:35
+ * @LastEditTime: 2021-07-12 17:30:59
  * @Description: 处理登陆身份鉴权
  */
 
   
 import store from "../store";
-import { DataType ,Storage} from "wl-core"
+import { Storage} from "wl-core"
 /**
 * @name 导入获取本地身份token函数
 */
@@ -29,7 +29,8 @@ import qianKunStart from "./app-register"
  * @name 导入无需服务端获取的微应用
  */
 import { noAuthApps, nextAuthApps } from "./app-config"
-
+import { DataType } from "wl-core"
+import {  traverseDataToMenu } from "@/utils/utils.js";
 /**
  * @name 请求获取服务端子应用注册表
  */
@@ -62,18 +63,81 @@ const getAppConfigs = () => {
       })
       return;
     }
-
     // 处理菜单状态共享
     let _menu = [];
-    _res.forEach(i => {
-      if (DataType.isArray(i.data)) _menu.push(...i.data)
-    })
-    console.log("_menu",_menu);
+    
+    if (Object.keys(_res).includes("extendMenuList")){
+      let flightcenterList = _res.extendMenuList.flightcenter||[];
+      let actoList = _res.extendMenuList.acto || [];
+      console.log("flightcenterList  ", flightcenterList);
+      console.log("actoList  ", actoList);
+      // _menu = _res.extendMenuList||[];
+      flightcenterList = traverseDataToMenu(flightcenterList,{
+        funId:"id",
+        funNameCn: "title",
+        funUrl: "url",
+      })
+      actoList = traverseDataToMenu(actoList, {
+        funId: "id",
+        funNameCn: "title",
+        funUrl: "url",
+      })
+      _menu = [...flightcenterList, ...actoList]
+      // _menu = (_menu.length > 0 && _menu[0].sysCode == "flightcenter") ? _menu[0].childrenFuns :[]
+    }else{
+      _res.forEach(i => {
+        if (DataType.isArray(i.data)) _menu.push(...i.data)
+      })
+    }
     store.dispatch('menu/setMenu', _menu);
+    let appConfig = [{
+      defaultRegister: true,
+      entry: "//localhost:8081",
+      module: "resouce_mgr",
+      routerBase: "/resouce_mgr",
+      data:[
+
+      ],
+    },{
+      defaultRegister: false,
+      entry: "//localhost:8080",
+      module: "cargo",
+      routerBase: "/cargo",
+      data: [
+        {
+          id: "1",
+          title: "wl-ui",
+          icon: "el-icon-monitor",
+          children: [
+            {
+              id: "1-1",
+              title: "home",
+              url: "/cargo"
+            },
+            {
+              id: "1-2",
+              title: "about",
+              url: "/cargo/flightInfoManageControl"
+            }
+          ]
+        }
+      ],
+    }]
+    // appConfig.map(obj=>{
+    //   _menu.forEach((item)=>{
+    //     if (obj.module == item.funCode){
+    //       obj.data = [item]
+    //       return false
+    //     }
+    //   })
+    // })
+    console.log("appConfig +++++ ", appConfig);
+    console.log("_menu +++++ ", _menu);
     /**
      * @name 启用qiankun微前端应用，已启动过用手动加载，未启动过正常注册
      */
-    qianKunStart([..._res, ...nextAuthApps]);
+    // let menu = [..._res]
+    qianKunStart([...appConfig, ...nextAuthApps]);
   })
 }
 
