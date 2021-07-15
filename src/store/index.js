@@ -1,6 +1,14 @@
+/*
+ * @Author: MrAlenZhong
+ * @Date: 2021-07-02 16:18:31
+ * @LastEditors: MrAlenZhong
+ * @LastEditTime: 2021-07-14 08:55:52
+ * @Description: 
+ */
 import Vue from 'vue'
 import Vuex from 'vuex'
 import getters from './getters'
+import persistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
@@ -19,7 +27,8 @@ const modules = modulesFiles.keys().reduce((modules, modulePath) => {
 
 const store = new Vuex.Store({
   modules,
-  getters
+  getters,
+  plugins: [persistedState()]
 })
 
 export default store

@@ -2,7 +2,7 @@
  * @Author: MrAlenZhong
  * @Date: 2021-07-02 16:18:31
  * @LastEditors: MrAlenZhong
- * @LastEditTime: 2021-07-12 15:04:30
+ * @LastEditTime: 2021-07-14 17:00:50
  * @Description: 公共工具类
  */
 
@@ -13,6 +13,7 @@
  * @param {String} title 标题 暂时没有用
  */
 function routerGo(href = '/', title = null, stateObj = {}) {
+  
   window.history.pushState(stateObj, title, href + '/');
 }
 
@@ -22,7 +23,6 @@ function routerGo(href = '/', title = null, stateObj = {}) {
  */
 
 function traverseDataToMenu(list=[], setting={}) {
-  console.log("traverseDataToMenu list ",list);
   var newList = list.map((obj) => {
     for (var key in obj) {
       var newKey = setting[key];

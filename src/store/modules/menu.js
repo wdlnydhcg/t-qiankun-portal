@@ -2,7 +2,7 @@
  * @Author: MrAlenZhong
  * @Date: 2021-07-02 16:18:31
  * @LastEditors: MrAlenZhong
- * @LastEditTime: 2021-07-09 17:08:57
+ * @LastEditTime: 2021-07-14 16:02:22
  * @Description: 
  */
 export default {
@@ -37,31 +37,38 @@ export default {
         state.nav_list.push(data);
       }
     },
-    SET_NAVCURID(state,data){
+    SET_NAV_CUR_ID(state,data){
       state.nav_cur_id = data;
-    }
+    },
+    // REMOVE_NAV_ITEM(state,data){
+    //   state = dta
+    // }
   },
   actions: {
     // 推入用户菜单
     setMenu({ commit }, data) {
-      console.log("setMenu data ", data);
       commit('SET_MENU', data)
     },
     // 设置折叠状态
     setCollapseStatus ({ commit }, data) {
       commit('SET_COLLAPSE_STATUS', data)
     },
-    // 设置折叠状态
+  
+
+    //设置tab的数组
     setNavList ({ commit }, data) {
       commit('SET_NAV_LIST', data)
     },
+    // removeNavItem({commit},data){
+    //   commit('REMOVE_NAV_ITEM', data)
+    // },
     //点击左侧菜单，增加顶部tab
     addNavItem ({ commit }, data){
       commit('ADD_NAV_ITEM',data)
     },
     //切换tab
-    setNavItem({ commit},data){
-      commit('SET_NAVCURID', data)
+    setNavCurId({ commit},data){
+      commit('SET_NAV_CUR_ID', data)
     }
   }
 }

@@ -2,7 +2,7 @@
  * @Author: MrAlenZhong
  * @Date: 2021-06-25 16:18:31
  * @LastEditors: MrAlenZhong
- * @LastEditTime: 2021-07-12 10:00:18
+ * @LastEditTime: 2021-07-13 15:02:09
  * @Description: 
 -->
 <template>
@@ -10,13 +10,12 @@
     <!-- 登陆后视图 -->
 
     <template v-if="hasToken">
-      <!-- 左侧菜单区 -->
-       <the-nav />
-      <!-- 右侧视图 -->
+      <!-- 上部导航区 -->
+      <the-nav />
       <div class="main-container-content">
-        <!-- 上部导航区 -->
+          <!-- 左侧菜单区 -->
       <the-menu class="main-menu-box" />
-
+      <!-- 右侧视图 -->
         <!-- 子应用渲染区 -->
         <div class="main-container-view" :class="{'isCollapse_view':!isCollapse}">
           <el-scrollbar class="nh-scroll">
@@ -79,6 +78,9 @@ body {
   flex-direction: column;
   width: 100%;
   height: 100%;
+  .main-menu-box{
+    overflow-y: auto;
+  }
 }
 .main-container-content {
   flex: 1;

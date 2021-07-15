@@ -2,7 +2,7 @@
  * @Author: MrAlenZhong
  * @Date: 2021-07-02 16:18:31
  * @LastEditors: MrAlenZhong
- * @LastEditTime: 2021-07-12 17:45:58
+ * @LastEditTime: 2021-07-15 08:59:34
  * @Description: 
 -->
 
@@ -38,17 +38,21 @@
 
 
    <!-- ***{{menu_list}}*** -->
+   <!-- {{nav_list}} -->
+       <!-- {{nav_cur_id}} -->
      <el-menu
       class="the-menu is_collapse_menu"
       :collapse="is_collapse"
       :text-color="themeMenu.text"
-      :default-openeds="menuDefaultOpeneds"
+      :default-active="defaultActive"
+
       :background-color="themeMenu.background"
       :active-text-color="themeMenu.active_text"
     >
       <div v-for="(menuItem, index) in menu_list" :key="index">
         <template v-if="menuItem['childrenFuns'].length>0">
-          <el-submenu class="class_0" :index="index.toString()">
+          <!-- <el-submenu class="class_0" :index="index.toString()"> -->
+            <el-submenu class="class_0" :index="menuItem.id">
             <template #title>
               <svg class="nhicon" aria-hidden="true" style="padding-right: 3px">
                 <use :xlink:href="menuItem.icon"></use>
@@ -60,9 +64,13 @@
               :key="childIndex"
             >
               <template v-if="childItem['childrenFuns'].length > 0">
-                <el-submenu
+                <!-- <el-submenu
                   :class="`${index}-${childIndex} xxx`"
                   :index="`${index}-${childIndex}`"
+                > -->
+                <el-submenu
+                  :class="`${index}-${childIndex} xxx`"
+                  :index="childItem.id"
                 >
                   <template v-slot:title>
                     <svg class="nhicon" aria-hidden="true">
@@ -77,9 +85,13 @@
                     :key="subChildIndex"
                   >
                     <template v-if="subChildItem['childrenFuns'].length>0">
-                      <el-submenu
+                      <!-- <el-submenu
                         :class="`${index}-${childIndex}-${subChildIndex}   `"
                         :index="`${index}-${childIndex}-${subChildIndex}`"
+                      > -->
+                      <el-submenu
+                        :class="`${index}-${childIndex}-${subChildIndex}   `"
+                        :index="subChildItem.id"
                       >
                         <template v-slot:title>
                           <svg class="nhicon" aria-hidden="true">
@@ -93,7 +105,7 @@
                           ) in subChildItem['childrenFuns']"
                           :key="grandChildIndex"
                         >
-                          <el-menu-item
+                          <!-- <el-menu-item
                             :class="`${index}-${childIndex}-${subChildIndex}-${grandChildIndex}`"
                             :index="`${index}-${childIndex}-${subChildIndex}-${grandChildIndex}`"
                             @click="
@@ -102,7 +114,17 @@
                                 `${index}-${childIndex}-${subChildIndex}-${grandChildIndex}`
                               )
                             "
-                          >
+                          > -->
+                          <el-menu-item
+                            :class="`${index}-${childIndex}-${subChildIndex}-${grandChildIndex}`"
+                           :index="grandChildItem.id"
+                            @click="
+                              openTagPage(
+                                grandChildItem,
+                                `${index}-${childIndex}-${subChildIndex}-${grandChildIndex}`
+                              )
+                            "
+                          > 
                             <svg class="nhicon" aria-hidden="true">
                               <use :xlink:href="grandChildItem.icon"></use>
                             </svg>
@@ -112,9 +134,19 @@
                       </el-submenu>
                     </template>
                     <template v-else>
-                      <el-menu-item
+                      <!-- <el-menu-item
                         :class="`${index}-${childIndex}-${subChildIndex}`"
                         :index="`${index}-${childIndex}-${subChildIndex}`"
+                        @click="
+                          openTagPage(
+                            subChildItem,
+                            `${index}-${childIndex}-${subChildIndex}`
+                          )
+                        "
+                      > -->
+                       <el-menu-item
+                        :class="`${index}-${childIndex}-${subChildIndex}`"
+                        :index="subChildItem.id"
                         @click="
                           openTagPage(
                             subChildItem,
@@ -132,8 +164,12 @@
                 </el-submenu>
               </template>
               <template v-else>
-                <el-menu-item
+                <!-- <el-menu-item
                   :index="`${index}-${childIndex}`"
+                  @click="openTagPage(childItem, `${index}-${childIndex}`)"
+                > -->
+                <el-menu-item
+                  :index="childItem.id"
                   @click="openTagPage(childItem, `${index}-${childIndex}`)"
                 >
                   <svg class="nhicon" aria-hidden="true">
@@ -146,8 +182,12 @@
           </el-submenu>
         </template>
         <template v-else>
-          <el-menu-item
+          <!-- <el-menu-item
             :index="index.toString()"
+            @click="openTagPage(menuItem, index.toString())"
+          > -->
+          <el-menu-item
+            :index="menuItem.id"
             @click="openTagPage(menuItem, index.toString())"
           >
             <svg class="nhicon" aria-hidden="true" style="padding-left: 3px">
@@ -168,7 +208,7 @@
 <script>
 import { mapGetters } from "vuex"; // 引入状态共享
 // import {menu} from "@/store/index.js"
-import { routerGo } from "@/utils/utils.js"; // 引入跨应用路由跳转
+// import { routerGo } from "@/utils/utils.js"; // 引入跨应用路由跳转
 import router from  "@/router/index.js"
 export default {
   name: "theMenu",
@@ -201,18 +241,14 @@ export default {
     ...mapGetters(["menu_list", "is_collapse", "nav_list",'nav_cur_id'])
   },
   methods: {
-    openTagPage(obj,index){
-      router.push({"path":obj.url})
-      console.log("obj",obj);
-      console.log("index",index);
-    },
     // 跨应用路由跳转
-    goto(parens, curItem) {
-      console.log("***** parens", parens);
-      console.log("***** curItem", curItem);
+    openTagPage(item, index) {
+      console.log("***** item", item);
+      console.log("***** index", index);
       // addNavItem
-      this.$store.dispatch("menu/addNavItem", curItem);
-      routerGo(curItem.url);
+      this.$store.dispatch("menu/addNavItem", item);
+      router.push({"path":item.url})
+      // routerGo(curItem.url);
     },
     handleOpen(key, keyPath) {
       console.log(key, keyPath);

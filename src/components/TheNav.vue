@@ -16,8 +16,11 @@
       <span style="position: absolute;left: 0;">
         {{subappMsg}}
       </span>
-
-      <tab-list/>
+      <!-- <tab-list> -->
+        <span>
+          <!-- <TabList/> -->
+          <tab-list/>
+        </span>
     </div>
     <!-- 右侧操作区 -->
     <div class="nav-handle-box user-info">
@@ -288,6 +291,7 @@ export default {
 
   .pager-tab-list {
     display: inline-block;
+    position: relative;
     font-weight: 600;
     font-size: 16px;
     width: calc(100% - 680px);

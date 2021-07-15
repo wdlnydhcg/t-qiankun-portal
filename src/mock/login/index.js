@@ -2,7 +2,7 @@
  * @Author: MrAlenZhong
  * @Date: 2021-07-05 10:55:45
  * @LastEditors: MrAlenZhong
- * @LastEditTime: 2021-07-12 17:45:36
+ * @LastEditTime: 2021-07-14 17:25:00
  * @Description: 
  */
 import Mock from 'mockjs';
@@ -83,15 +83,15 @@ Mock.mock(baseUrl+'/Api/GetAppConfigs', 'get', { //输出数据
                         {
                           "sysCode": "flightcenter",
                           "funType": "menu",
-                          "funUrl": "aaa",
+                          "funUrl": "/flightcenter/dynamic_flight_mgr_search",
                           "parentFunID": "16fbb450f5e945f29b5f613b0df9e00e",
                           "funImg": "",
                           "operateType": "",
                           "funNameCn": "动态航班查询",
                           "funUrls": [
                             {
-                              "funUrl": "aaa",
-                              "funRemark": "qqq"
+                              "funUrl": "/flightcenter/dynamic_flight_mgr_search",
+                              "funRemark": "dynamic_flight_mgr_add"
                             }
                           ],
                           "dunDesc": "",
@@ -103,12 +103,17 @@ Mock.mock(baseUrl+'/Api/GetAppConfigs', 'get', { //输出数据
                         {
                           "sysCode": "flightcenter",
                           "funType": "menu",
-                          "funUrl": null,
+                          "funUrl": "/flightcenter/flightInfoManageControl",
                           "parentFunID": "16fbb450f5e945f29b5f613b0df9e00e",
                           "funImg": "",
                           "operateType": "",
                           "funNameCn": "动态航班新增",
-                          "funUrls": [],
+                          "funUrls": [
+                            {
+                              "funUrl": "/flightcenter/flightInfoManageControl",
+                              "funRemark": "dynamic_flight_mgr_add"
+                            }
+                          ],
                           "dunDesc": "",
                           "funCode": "dynamic_flight_mgr_add",
                           "funIndex": "2",

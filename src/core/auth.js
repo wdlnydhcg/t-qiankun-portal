@@ -2,7 +2,7 @@
  * @Author: MrAlenZhong
  * @Date: 2021-07-02 16:48:52
  * @LastEditors: MrAlenZhong
- * @LastEditTime: 2021-07-12 17:30:59
+ * @LastEditTime: 2021-07-15 09:12:16
  * @Description: 处理登陆身份鉴权
  */
 
@@ -91,22 +91,38 @@ const getAppConfigs = () => {
     }
     store.dispatch('menu/setMenu', _menu);
     let appConfig = [{
-      defaultRegister: true,
+      defaultRegister: false,
       entry: "//localhost:8081",
-      module: "resouce_mgr",
-      routerBase: "/resouce_mgr",
+      module: "flightcenter",
+      routerBase: "/flightcenter",
       data:[
-
+        {
+          id: "1",
+          title: "航班业务袋",
+          icon: "el-icon-monitor",
+          children: [
+            {
+              id: "1-1",
+              title: "home",
+              url: "/flightcenter"
+            },
+            {
+              id: "1-2",
+              title: "about",
+              url: "/flightcenter/flightInfoManageControl"
+            }
+          ]
+        }
       ],
     },{
-      defaultRegister: false,
+      defaultRegister: true,
       entry: "//localhost:8080",
       module: "cargo",
       routerBase: "/cargo",
       data: [
         {
           id: "1",
-          title: "wl-ui",
+          title: "航班业务袋",
           icon: "el-icon-monitor",
           children: [
             {
