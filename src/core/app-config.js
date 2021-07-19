@@ -2,7 +2,7 @@
  * @Author: MrAlenZhong
  * @Date: 2021-07-02 16:18:31
  * @LastEditors: MrAlenZhong
- * @LastEditTime: 2021-07-06 16:56:26
+ * @LastEditTime: 2021-07-16 11:24:02
  * @Description: 无需服务端获取的微应用
  */
 
@@ -12,7 +12,7 @@ const href = "http://" + location.hostname;
 const noAuthApps = [
   {
     module: "subapp-login",
-    defaultRegister: true,
+    defaultApp: true,
     entry: href + ':2753',
     routerBase: "/login",
     useExternals: true,

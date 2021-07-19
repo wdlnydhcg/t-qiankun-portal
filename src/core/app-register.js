@@ -10,6 +10,7 @@ import emits from "../utils/emit"
  * @name 导入qiankun应用间通信机制appStore
  */
 import appStore from '../utils/app-store'
+
 /**
  * @name 导入全局常量给子应用
  */
@@ -17,7 +18,7 @@ import GLOBAL from '../global'
 /**
  * @name 声明子应用挂载dom，如果不需要做keep-alive，则只需要一个dom即可；
  */
-const appContainer = "#subapp-viewport";
+// const appContainer = "#subapp-viewport";
 
 /**
  * @name 声明要传递给子应用的信息
@@ -41,27 +42,78 @@ const qianKunStart = (list) => {
   /**
    * @name 处理子应用注册表数据
    */
-  let apps = []; // 子应用数组盒子
+  let MICRO_CONF = []; // 子应用数组盒子
   let defaultApp = null; // 默认注册应用路由前缀
-  list.forEach(i => {
-    apps.push({
-      name: i.module,
-      entry: i.entry,
-      container: appContainer,
-      activeRule: i.routerBase,
-      props: { ...props, routes: i.data, routerBase: i.routerBase }
+  console.log("qianKunStart *** list", list);
+  list.forEach(item => {
+    MICRO_CONF.push({
+      ...item,
+      name: item.module,
+      entry: item.entry,
+      container: "#subapp-"+item.mountId,
+      activeRule: item.routerBase,
+      props: { 
+        ...props, 
+        routes: item.data, 
+        routerBase: item.routerBase
+      }
     })
-    if (i.defaultRegister) defaultApp = i.routerBase;
+    if (item.defaultApp) defaultApp = item.routerBase;
   });
+  // apps = [
+  //   {
+  //     activeRule: "/cargo",
+  //     container: "#subapp-viewport",
+  //     entry: "//localhost:8080",
+  //     name: "cargo",
+  //     props: {
+  //       ...props,
+  //       routes: [{
+  //         children: [
+  //           { id: "1-1", title: "home", url: "/cargo/home" }, 
+  //           { id: "1-2", title: "about", url: "/cargo/flightInfoManageControl" }],
+  //         icon: "el-icon-monitor",
+  //         id: "1",
+  //         title: "航班业务袋"
+  //       }],
+  //       routerBase: "/cargo",
+
+  //     }
+  //   },
+  //   {
+  //     activeRule: "/cargo",
+  //     container: "#subapp-viewport2",
+  //     entry: "//localhost:8080",
+  //     name: "cargo2",
+  //     props: {
+  //       ...props,
+  //       routes: [{
+  //         children: [
+  //           { id: "1-1", title: "home", url: "/cargo/home" },
+  //           { id: "1-2", title: "about", url: "/cargo/flightInfoManageControl" }],
+  //         icon: "el-icon-monitor",
+  //         id: "1",
+  //         title: "航班业务袋2"
+  //       }],
+  //       routerBase: "/cargo",
+
+  //     }
+  //   }
+  // ]
 
   /**
   * @name 注册子应用
   * @param {Array} list subApps
   */
-  console.log("apps  ****** ", apps);
+  console.log("apps  ****** ", MICRO_CONF);
   registerMicroApps(
-    apps,
+    MICRO_CONF,
     {
+      bootstrap:[
+        app=>{
+          console.log('[LifeCycle]  bootstrap %c%s', 'color: green;', app.name);
+        }
+      ],
       beforeLoad: [
         app => {
           console.log('[LifeCycle] before load %c%s', 'color: green;', app.name);
@@ -69,8 +121,18 @@ const qianKunStart = (list) => {
       ],
       beforeMount: [
         app => {
-          console.log('[LifeCycle] before mount %c%s', 'color: green;', app.name);
+          console.log('[LifeCycle] before beforeMount %c%s', 'color: green;', app.name);
         },
+      ],
+      afterMount:[
+        app=>{
+          console.log('[LifeCycle] before afterMount %c%s', 'color: green;', app.name);
+        }
+      ],
+      beforeUnmount:[
+        app => {
+          console.log('[LifeCycle] before beforeUnmount %c%s', 'color: green;', app.name);
+        }
       ],
       afterUnmount: [
         app => {
@@ -89,7 +151,13 @@ const qianKunStart = (list) => {
   /**
    * @name 启动微前端
    */
-  start();
+  start({
+    // prefetch:"all",
+    // singular:true,
+    // sandbox:{
+    //   experimentalStyleIsolation:true
+    // }
+  });
 
   /**
    * @name 微前端启动进入第一个子应用后回调函数

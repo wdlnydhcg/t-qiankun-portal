@@ -2,7 +2,7 @@
  * @Author: MrAlenZhong
  * @Date: 2021-07-05 10:55:45
  * @LastEditors: MrAlenZhong
- * @LastEditTime: 2021-07-14 17:25:00
+ * @LastEditTime: 2021-07-16 10:02:31
  * @Description: 
  */
 import Mock from 'mockjs';
@@ -351,7 +351,7 @@ Mock.mock(baseUrl+'/Api/GetAppConfigs', 'get', { //输出数据
           "sysCode": "acto",
           "funType": "sys",
           "funUrl": null,
-          "parentFunID": "402881e6523d8cd401523d9086790000",
+          "parentFunID": "402881e6523d8cd41d3r3486790111",
           "funImg": "",
           "operateType": "",
           "funNameCn": "货站处理",
@@ -378,21 +378,40 @@ Mock.mock(baseUrl+'/Api/GetAppConfigs', 'get', { //输出数据
                 {
                   "sysCode": "acto",
                   "funType": "sys",
-                  "funUrl": "/cargo/flightInfoManageControl",
+                  "funUrl": "/acto/flightInfoManageControl",
                   "parentFunID": "11e15428a799454d81a167a5b316f711",
                   "funImg": "",
                   "operateType": "",
                   "funNameCn": "航班业务袋信息管控",
                   "funUrls": [
                     {
-                      "funUrl": "/cargo/flightInfoManageControl",
+                      "funUrl": "/acto/flightInfoManageControl",
                       "funRemark": "航班业务袋信息管控"
                     }
                   ],
                   "dunDesc": "",
                   "funCode": "flightInfoManageControl",
                   "funIndex": "461",
-                  "funId": "11e15428a799454ewqdaq23217a5b316f722",
+                  "funId": "3fghgfr3gedxfd23217a5b316f722",
+                  "childrenFuns": []
+                }, {
+                  "sysCode": "acto",
+                  "funType": "sys",
+                  "funUrl": "/acto/home",
+                  "parentFunID": "11e15428a799454d81a167a5b316f711",
+                  "funImg": "",
+                  "operateType": "",
+                  "funNameCn": "主页",
+                  "funUrls": [
+                    {
+                      "funUrl": "/acto/home",
+                      "funRemark": "home"
+                    }
+                  ],
+                  "dunDesc": "",
+                  "funCode": "home",
+                  "funIndex": "461",
+                  "funId": "11e15428a799454ewqdaq23217a5b316f112",
                   "childrenFuns": []
                 }
               ]
@@ -405,7 +424,7 @@ Mock.mock(baseUrl+'/Api/GetAppConfigs', 'get', { //输出数据
   "data11": [
     {
       "module": "tang-cargo",
-      "defaultRegister": true,
+      "defaultApp": true,
       "entry": "//localhost:8080",
       "routerBase": "/tang-cargo",
       "data": [
@@ -424,7 +443,7 @@ Mock.mock(baseUrl+'/Api/GetAppConfigs', 'get', { //输出数据
       ]
     }, {
       "module": "subapp-tang-mgr",
-      "defaultRegister": true,
+      "defaultApp": true,
       "entry": "//localhost:7000",
       "routerBase": "/tangmgr",
       "data": [

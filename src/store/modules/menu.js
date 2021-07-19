@@ -2,12 +2,14 @@
  * @Author: MrAlenZhong
  * @Date: 2021-07-02 16:18:31
  * @LastEditors: MrAlenZhong
- * @LastEditTime: 2021-07-14 16:02:22
+ * @LastEditTime: 2021-07-15 15:57:43
  * @Description: 
  */
 export default {
   namespaced: true,
   state: {
+    //所有子应用的挂载点id
+    mount_id_list:[],
     //左侧菜单栏
     is_collapse: false, // 折叠状态
     menu_list: [], // 菜单数据
@@ -16,6 +18,10 @@ export default {
     nav_cur_id:"",
   },
   mutations: {
+    //设置挂载点的队列
+    SET_MOUNT_ID_LIST(state,data){
+      state.mount_id_list = data;
+    },
     // 推入用户菜单
     SET_MENU(state, data) {
       state.menu_list = data;
@@ -45,6 +51,10 @@ export default {
     // }
   },
   actions: {
+    //SET_MOUNT_ID_LIST
+    setMountIdList({commit},data){
+      commit('SET_MOUNT_ID_LIST', data)
+    },
     // 推入用户菜单
     setMenu({ commit }, data) {
       commit('SET_MENU', data)

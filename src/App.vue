@@ -2,7 +2,7 @@
  * @Author: MrAlenZhong
  * @Date: 2021-06-25 16:18:31
  * @LastEditors: MrAlenZhong
- * @LastEditTime: 2021-07-13 15:02:09
+ * @LastEditTime: 2021-07-16 17:12:23
  * @Description: 
 -->
 <template>
@@ -11,7 +11,7 @@
 
     <template v-if="hasToken">
       <!-- 上部导航区 -->
-      <the-nav />
+      <the-nav class="main-nav-box"/>
       <div class="main-container-content">
           <!-- 左侧菜单区 -->
       <the-menu class="main-menu-box" />
@@ -19,9 +19,8 @@
         <!-- 子应用渲染区 -->
         <div class="main-container-view" :class="{'isCollapse_view':!isCollapse}">
           <el-scrollbar class="nh-scroll">
-            <!-- qiankun2.0  container 模式-->
-            <div id="subapp-viewport" class="app-view-box"></div>
-            <div id="subapp-viewport2" class="app-view-box"></div>
+            <div :id="'subapp-'+item" class="app-view-box" v-for="(item) in mount_id_list" :key="item">
+            </div>
           </el-scrollbar>
         </div>
       </div>
@@ -35,7 +34,7 @@
 <script>
 import TheMenu from "@/components/TheMenu.vue";
 import TheNav from "@/components/TheNav.vue";
-
+import { mapGetters } from "vuex";
 
 export default {
   name: "rootView",
@@ -49,6 +48,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(["nav_list", "nav_cur_id","mount_id_list"]),
     hasToken() {
       return !!this.$store.getters.token;
     },
@@ -60,6 +60,7 @@ export default {
     },
   },
   mounted(){
+    console.log("mount_id_list",this.$store.getters.mount_id_list);
     // console.log('this.$store.getters.menu_list',this.$store.getters.menu_list);
     // this.$store.dispatch("menu/setMenu",[])
   }

@@ -2,7 +2,7 @@
  * @Author: MrAlenZhong
  * @Date: 2021-07-01 15:47:19
  * @LastEditors: MrAlenZhong
- * @LastEditTime: 2021-07-14 17:00:07
+ * @LastEditTime: 2021-07-16 09:31:22
  * @Description: 导航中tablist的组件
 -->
 
@@ -62,7 +62,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["nav_list", "nav_cur_id"])
+    ...mapGetters(["mount_id_list","nav_list","nav_cur_id"])
   },
   watch: {
     nav_cur_id:{
@@ -75,7 +75,6 @@ export default {
         });
       },
       immediate:true
-      
     },
     editableTabsValue(value){
       this.$store.dispatch("menu/setNavCurId", value);

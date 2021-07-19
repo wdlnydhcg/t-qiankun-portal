@@ -2,13 +2,13 @@
  * @Author: MrAlenZhong
  * @Date: 2021-07-02 16:48:52
  * @LastEditors: MrAlenZhong
- * @LastEditTime: 2021-07-15 09:12:16
+ * @LastEditTime: 2021-07-19 08:34:52
  * @Description: 处理登陆身份鉴权
  */
 
-  
+
 import store from "../store";
-import { Storage} from "wl-core"
+import { Storage } from "wl-core"
 /**
 * @name 导入获取本地身份token函数
 */
@@ -29,8 +29,9 @@ import qianKunStart from "./app-register"
  * @name 导入无需服务端获取的微应用
  */
 import { noAuthApps, nextAuthApps } from "./app-config"
-import { DataType } from "wl-core"
-import {  traverseDataToMenu } from "@/utils/utils.js";
+// import { DataType } from "wl-core"
+import { traverseDataToMenu, traverseDataToAppConfig } from "@/utils/utils.js";
+
 /**
  * @name 请求获取服务端子应用注册表
  */
@@ -65,80 +66,153 @@ const getAppConfigs = () => {
     }
     // 处理菜单状态共享
     let _menu = [];
-    
-    if (Object.keys(_res).includes("extendMenuList")){
-      let flightcenterList = _res.extendMenuList.flightcenter||[];
-      let actoList = _res.extendMenuList.acto || [];
-      console.log("flightcenterList  ", flightcenterList);
-      console.log("actoList  ", actoList);
-      // _menu = _res.extendMenuList||[];
-      flightcenterList = traverseDataToMenu(flightcenterList,{
-        funId:"id",
-        funNameCn: "title",
-        funUrl: "url",
-      })
-      actoList = traverseDataToMenu(actoList, {
-        funId: "id",
-        funNameCn: "title",
-        funUrl: "url",
-      })
-      _menu = [...flightcenterList, ...actoList]
-      // _menu = (_menu.length > 0 && _menu[0].sysCode == "flightcenter") ? _menu[0].childrenFuns :[]
-    }else{
-      _res.forEach(i => {
-        if (DataType.isArray(i.data)) _menu.push(...i.data)
-      })
+
+    let flightcenterList = [], actoList = [];
+    if (_res.extendMenuList.flightcenter && _res.extendMenuList.flightcenter[0].childrenFuns) {
+      flightcenterList = _res.extendMenuList.flightcenter[0].childrenFuns
     }
-    store.dispatch('menu/setMenu', _menu);
-    let appConfig = [{
-      defaultRegister: false,
-      entry: "//localhost:8081",
-      module: "flightcenter",
-      routerBase: "/flightcenter",
-      data:[
-        {
-          id: "1",
-          title: "航班业务袋",
-          icon: "el-icon-monitor",
-          children: [
-            {
-              id: "1-1",
-              title: "home",
-              url: "/flightcenter"
-            },
-            {
-              id: "1-2",
-              title: "about",
-              url: "/flightcenter/flightInfoManageControl"
-            }
-          ]
-        }
-      ],
-    },{
-      defaultRegister: true,
-      entry: "//localhost:8080",
-      module: "cargo",
-      routerBase: "/cargo",
-      data: [
-        {
-          id: "1",
-          title: "航班业务袋",
-          icon: "el-icon-monitor",
-          children: [
-            {
-              id: "1-1",
-              title: "home",
-              url: "/cargo"
-            },
-            {
-              id: "1-2",
-              title: "about",
-              url: "/cargo/flightInfoManageControl"
-            }
-          ]
-        }
-      ],
-    }]
+    if (_res.extendMenuList.acto && _res.extendMenuList.acto[0].childrenFuns) {
+      actoList = _res.extendMenuList.acto[0].childrenFuns
+    }
+
+    // let actoList = _res.extendMenuList.acto || [];
+    flightcenterList = traverseDataToMenu(flightcenterList, {
+      funId: "id",
+      funNameCn: "title",
+      funUrl: "url",
+    })
+    actoList = traverseDataToMenu(actoList, {
+      funId: "id",
+      funNameCn: "title",
+      funUrl: "url",
+    })
+    _menu = [...flightcenterList, ...actoList]
+    _menu.push({
+      childrenFuns: [],
+      dunDesc: "",
+      funCode: "vue3test",
+      funImg: "",
+      funIndex: "463",
+      funType: "vue3test",
+      funUrls: [{
+        funRemark: "page1",
+        url: "/vue3test/page1"
+      }],
+      id: "11e15428a799454ewqdaq13217a5b316f711",
+      operateType: "",
+      parentFunID: "11e15428a799454d81a167a5b316f711",
+      sysCode: "vue3test",
+      title: "page1",
+      url: "/vue3test/page1",
+    }, {
+      childrenFuns: [],
+      dunDesc: "",
+      funCode: "vue3test",
+      funImg: "",
+      funIndex: "463",
+      funType: "vue3test",
+      funUrls: [{
+        funRemark: "page2",
+        url: "/vue3test/page2"
+      }],
+      id: "11e15428a799eq4ewqdaq13217a5b316f711",
+      operateType: "",
+      parentFunID: "11e15428a799454d81a167a5b316f711",
+      sysCode: "vue3test",
+      title: "page2",
+      url: "/vue3test/page2",
+    })
+    
+    let serveConfig = {
+      "flightcenter": {
+        defaultApp: false,
+        entry: "//localhost:8088",    //模块所属服务地址
+        module: "flightcenter",        //各模块 不能重复
+        routerBase: "/flightcenter",   //各模块 可重复
+        data: [                       //只需配置本模块的地址
+          /**
+           * 注册模块的地址
+          {
+            id: "1",
+            title: "航班业务袋",
+            url:"/flightcenter/flightInfoManageControl"
+          }
+           */
+        ]
+      },
+      "acto": {
+        defaultApp: true,
+        entry: "//localhost:8081",    //模块所属服务地址
+        module: "acto",               //各模块 不能重复
+        routerBase: "/acto",          //各模块 可重复
+        data: []                      //只需配置本模块的地址
+      },
+      "vue3test":{
+        defaultApp: true,
+        entry: "//localhost:8082",    //模块所属服务地址
+        module: "vue3test",               //各模块 不能重复
+        routerBase: "/vue3test",          //各模块 可重复
+        data: []                      //只需配置本模块的地址
+      },
+      // "vue3test2": {
+      //   defaultApp: true,
+      //   entry: "//localhost:8080",    //模块所属服务地址
+      //   module: "vue3test2",               //各模块 不能重复
+      //   routerBase: "/vue3test2",          //各模块 可重复
+      //   data: []                      //只需配置本模块的地址
+      // }
+    }
+    let appConfig = traverseDataToAppConfig(_menu, serveConfig)
+    // let appConfig = [{
+    //   defaultApp: true,
+    //   entry: "//localhost:8081",
+    //   module: "flightcenter",
+    //   routerBase: "/flightcenter",
+    //   data: [
+    //     {
+    //       id: "1",
+    //       title: "航班业务袋",
+    //       icon: "el-icon-monitor",
+    //       children: [
+    //         {
+    //           id: "1-1",
+    //           title: "home",
+    //           url: "/flightcenter"
+    //         },
+    //         {
+    //           id: "1-2",
+    //           title: "about",
+    //           url: "/flightcenter/flightInfoManageControl"
+    //         }
+    //       ]
+    //     }
+    //   ],
+    // }, {
+    //   defaultApp: true,
+    //   entry: "//localhost:8080",
+    //   module: "cargo",
+    //   routerBase: "/cargo",
+    //   data: [
+    //     {
+    //       id: "1",
+    //       title: "航班业务袋",
+    //       icon: "el-icon-monitor",
+    //       children: [
+    //         {
+    //           id: "1-1",
+    //           title: "home",
+    //           url: "/cargo/home"
+    //         },
+    //         {
+    //           id: "1-2",
+    //           title: "about",
+    //           url: "/cargo/flightInfoManageControl"
+    //         }
+    //       ]
+    //     }
+    //   ],
+    // }]
+
     // appConfig.map(obj=>{
     //   _menu.forEach((item)=>{
     //     if (obj.module == item.funCode){
@@ -147,8 +221,15 @@ const getAppConfigs = () => {
     //     }
     //   })
     // })
-    console.log("appConfig +++++ ", appConfig);
     console.log("_menu +++++ ", _menu);
+    console.log("appConfig +++++ ", appConfig);
+    
+    let mountIdList = appConfig.map(item=>{
+      return item.mountId
+    })
+    store.dispatch('menu/setMenu', _menu);
+    store.dispatch('menu/setMountIdList', mountIdList);
+    console.log("mountIdList", mountIdList);
     /**
      * @name 启用qiankun微前端应用，已启动过用手动加载，未启动过正常注册
      */

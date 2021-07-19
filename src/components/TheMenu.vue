@@ -2,7 +2,7 @@
  * @Author: MrAlenZhong
  * @Date: 2021-07-02 16:18:31
  * @LastEditors: MrAlenZhong
- * @LastEditTime: 2021-07-15 08:59:34
+ * @LastEditTime: 2021-07-19 11:11:41
  * @Description: 
 -->
 
@@ -242,14 +242,15 @@ export default {
   },
   methods: {
     // 跨应用路由跳转
-    openTagPage(item, index) {
+    openTagPage(item) {
       console.log("***** item", item);
-      console.log("***** index", index);
       // addNavItem
       this.$store.dispatch("menu/addNavItem", item);
       router.push({"path":item.url})
       // routerGo(curItem.url);
     },
+
+   
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
     },
