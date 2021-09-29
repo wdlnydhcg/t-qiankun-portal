@@ -62,10 +62,10 @@ const qianKunStart = (list) => {
   });
   // apps = [
   //   {
-  //     activeRule: "/cargo",
+  //     activeRule: "/app",
   //     container: "#subapp-viewport",
   //     entry: "//localhost:8080",
-  //     name: "cargo",
+  //     name: "app",
   //     props: {
   //       ...props,
   //       routes: [{
@@ -81,10 +81,10 @@ const qianKunStart = (list) => {
   //     }
   //   },
   //   {
-  //     activeRule: "/cargo",
+  //     activeRule: "/app2",
   //     container: "#subapp-viewport2",
   //     entry: "//localhost:8080",
-  //     name: "cargo2",
+  //     name: "app2",
   //     props: {
   //       ...props,
   //       routes: [{
